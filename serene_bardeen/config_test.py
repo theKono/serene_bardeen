@@ -12,7 +12,7 @@ class Config(object):
     SECRET = 'abc'
     DOMAIN_NAME = 'localhost'
 
-    DB_USERNAME = 'admin'
-    DB_PASSWORD = 'admin'
+    DB_USERNAME = None
+    DB_PASSWORD = None
     DB_HOST = 'localhost'
     DB_DATABASE = 'serene_bardeen'

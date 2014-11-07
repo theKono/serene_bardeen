@@ -22,10 +22,10 @@ def abort(code=500, body="Unknown Error: Application stopped."):
 
 def require_parameter(key):
 
-    if key in bottle.request.json:
+    if bottle.request.json is not None and key in bottle.request.json:
         return bottle.request.json[key]
 
-    elif key in bottle.request.params:
+    elif bottle.request.params is not None and key in bottle.request.params:
         return bottle.request.params[key]
 
     else:
