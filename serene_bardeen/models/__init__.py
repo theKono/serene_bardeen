@@ -13,14 +13,16 @@ from serene_bardeen.config import Config
 def connect_database():
 
     connect(Config.DB_DATABASE,
-            Config.DB_HOST,
+            host=Config.DB_HOST,
             username=Config.DB_USERNAME,
             password=Config.DB_PASSWORD)
 
 
 def get_pymongo_db():
 
-    client = pymongo.MongoClient('mongodb://%s:%s@%s' % (Config.DB_USERNAME,
-                                                         Config.DB_PASSWORD,
-                                                         Config.DB_HOST))
+    client = pymongo.MongoClient(Config.DB_HOST)
+
+    if Config.DB_USERNAME and Config.DB_PASSWORD:
+        client.authenticate(Config.DB_USERNAME, Config.DB_PASSWORD)
+
     return client[Config.DB_DATABASE]
