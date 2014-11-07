@@ -24,7 +24,7 @@ class LinkValidater(object):
 
         try:
             self.parse_result = urlparse(self.url)
-            return True
+            return self.parse_result.scheme.lower() in ('http', 'https')
         except Exception:
             return False
 
