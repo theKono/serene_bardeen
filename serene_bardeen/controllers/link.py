@@ -16,7 +16,7 @@ from serene_bardeen.models.link import Link
 app = Bottle()
 
 
-@app.post('/links')
+@app.post('/api/links')
 def create():
 
     if require_parameter('secret') != Config.SECRET:
