@@ -8,16 +8,17 @@ from datetime import datetime
 from mongoengine import DateTimeField, Document, StringField
 
 # local library imports
+from serene_bardeen.config import Config
 
 
 class Link(Document):
 
     article_id = StringField(required=True)
-    original_link = StringField(required=True)
+    original_link = StringField(required=True, unique=True)
     created_at = DateTimeField(required=True, default=datetime.utcnow)
 
     meta = {
-        'indexes': ['article_id', 'original_link']
+        'indexes': ['article_id']
     }
 
     def to_json(self):
@@ -27,4 +28,5 @@ class Link(Document):
             'article_id': self.article_id,
             'original_link': self.original_link,
             'created_at': calendar.timegm(self.created_at.timetuple()),
+            'short_link': 'http://%s/%s' % (Config.DOMAIN_NAME, self.id)
         }
