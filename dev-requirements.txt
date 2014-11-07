@@ -1,0 +1,7 @@
+WebTest
+mock
+sure
+nose
+nose-watch
+factory_boy
+unittest2
