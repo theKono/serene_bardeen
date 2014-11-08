@@ -10,7 +10,7 @@ Article link tracer
 ## Link
 ### Create short link
 
- - API:  `POST {{base_url}}/api/links`
+ - API: `POST {{base_url}}/api/links`
  - Parameters:
 	 - secret
 	 - original_link: The original link to be registered.
@@ -26,3 +26,9 @@ Article link tracer
  }
  
  ```
+
+### Redirect link
+
+ - API: `GET {{base_url}}/{{link_id}}`
+ - Parameters: none
+ - Response: 302
