@@ -30,3 +30,15 @@ def require_parameter(key):
 
     else:
         abort(400, {'message': 'Required parameter "%s" missing' % key})
+
+
+def get_ip():
+
+    return (bottle.request.get_header('X-Real-Ip') or
+            bottle.request.get('REMOTE_ADDR'))
+
+
+def get_user_agent():
+
+    return (bottle.request.get_header('X-User-Agent') or
+            bottle.request.get('USER_AGENT'))
