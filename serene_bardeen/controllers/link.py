@@ -3,13 +3,15 @@
 # standard library imports
 
 # third party related imports
-from bottle import Bottle
+from bottle import Bottle, redirect
 from mongoengine import NotUniqueError
 
 # local library imports
 from serene_bardeen.components.link_validater import LinkValidater
 from serene_bardeen.controllers.helper import abort, require_parameter
+from serene_bardeen.controllers.helper import get_ip, get_user_agent
 from serene_bardeen.config import Config
+from serene_bardeen.models.click import Click
 from serene_bardeen.models.link import Link
 
 
@@ -45,3 +47,17 @@ def create():
         link = Link.objects(original_link=original_link).first()
 
     return link.to_json()
+
+
+@app.get('/<link_id:re:[0-9a-f]{24}>')
+def redirect_link(link_id):
+
+    link = Link.objects(id=link_id).only('original_link').first()
+    link is None and abort(404, {'message': 'Cannot identify the link'})
+
+    click = Click(link_id=link.id)
+    click.ip = Click.ip2long(get_ip())
+    click.user_agent = get_user_agent()
+    click.save()
+
+    redirect(link.original_link)
