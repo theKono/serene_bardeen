@@ -10,10 +10,11 @@ from sure import expect
 from ..base_test_case import BaseApiTestCase
 from ..factories.link import LinkFactory
 from serene_bardeen.config import Config
+from serene_bardeen.models.click import Click
 from serene_bardeen.models.link import Link
 
 
-# POST /links
+# POST /api/links
 class TestCreateLink(BaseApiTestCase):
 
     controller = 'serene_bardeen.controllers.link'
@@ -84,3 +85,31 @@ class TestCreateLink(BaseApiTestCase):
         response = self.test_app.post(self.api, params)
         expect(response.json).to.eql(link.to_json())
         expect(Link.objects.count()).to.eql(1)
+
+
+# GET /<link_id>
+class TestRedirectOriginalLink(BaseApiTestCase):
+
+    controller = 'serene_bardeen.controllers.link'
+
+    def test_when_link_does_not_exist(self):
+
+        response = self.test_app.get('/%s' % ObjectId(), expect_errors=True)
+        expect(response.status_int).to.eql(404)
+
+    def test_when_link_exists(self):
+
+        link = LinkFactory.create()
+        ip = '69.181.253.158'
+        user_agent = 'Testing'
+        headers = {'X-Real-Ip': ip, 'X-User-Agent': user_agent}
+
+        response = self.test_app.get('/%s' % link.id, headers=headers)
+        expect(response.status_int in (302, 303)).to.be(True)
+        expect(response.location).to.equal(link.original_link)
+
+        click_event = Click.objects.first()
+        expect(click_event).to_not.be(None)
+        expect(click_event.link_id).to.eql(link.id)
+        expect(click_event.ip).to.eql(Click.ip2long(ip))
+        expect(click_event.user_agent).to.eql(user_agent)
