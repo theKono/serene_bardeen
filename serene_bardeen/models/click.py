@@ -6,15 +6,19 @@ import struct
 import time
 
 # third party related imports
-from mongoengine import Document, IntField, ObjectIdField, StringField
+from bson import ObjectId
+from mongoengine import Document, IntField, StringField
+from mongoengine import signals
 
 # local library imports
 
 
 class Click(Document):
 
-    link_id = ObjectIdField(required=True)
-    ip = IntField(required=True)
+    # same as _id, but type is str
+    click_id = StringField(required=True, unique=True)
+    link_id = StringField(required=True)
+    ip = StringField(required=True)
     user_agent = StringField(required=True)
     created_at = IntField(required=True, default=time.time)
 
@@ -32,12 +36,30 @@ class Click(Document):
 
         return socket.inet_ntoa(struct.pack('>L', longip))
 
+    @classmethod
+    def from_pymongo_to_json(cls, doc):
+
+        permitted = ('click_id', 'link_id', 'ip', 'user_agent', 'created_at')
+        return {k: doc[k] for k in permitted if k in doc}
+
+    @classmethod
+    def pre_save(cls, sender, document, **kwargs):
+
+        if document.click_id is None:
+            if document.id is None:
+                document.id = ObjectId()
+
+            document.click_id = str(document.id)
+
     def to_json(self):
 
         return {
-            'id': str(self.id),
-            'link': str(self.link_id),
-            'ip': self.long2ip(self.ip),
+            'click_id': self.click_id,
+            'link_id': self.link_id,
+            'ip': self.ip,
             'user_agent': self.user_agent,
             'created_at': self.created_at,
         }
+
+
+signals.pre_save.connect(Click.pre_save, sender=Click)
