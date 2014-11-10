@@ -55,8 +55,8 @@ def redirect_link(link_id):
     link = Link.objects(id=link_id).only('original_link').first()
     link is None and abort(404, {'message': 'Cannot identify the link'})
 
-    click = Click(link_id=link.id)
-    click.ip = Click.ip2long(get_ip())
+    click = Click(link_id=str(link.id))
+    click.ip = get_ip()
     click.user_agent = get_user_agent()
     click.save()
 

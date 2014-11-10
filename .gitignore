@@ -55,3 +55,4 @@ target/
 
 config_production.py
 config.py
+.venv
