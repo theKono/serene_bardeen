@@ -47,13 +47,15 @@ Article link tracer
      - limit: Default is `100`.
  - Response:
  ```json
- {
-     "click_id": "54604e66802692367bcb991a",
-     "link_id": "54604e8f802692367bcb991c",
-     "ip": "170.190.250.24",
-     "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
-     "created_at": 1415597860
- }
+ [
+     {
+         "click_id": "54604e66802692367bcb991a",
+         "link_id": "54604e8f802692367bcb991c",
+         "ip": "170.190.250.24",
+         "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
+         "created_at": 1415597860
+     }
+ ]
  
  ```
 
