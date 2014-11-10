@@ -53,13 +53,8 @@ class Click(Document):
 
     def to_json(self):
 
-        return {
-            'click_id': self.click_id,
-            'link_id': self.link_id,
-            'ip': self.ip,
-            'user_agent': self.user_agent,
-            'created_at': self.created_at,
-        }
+        permitted = ('click_id', 'link_id', 'ip', 'user_agent', 'created_at')
+        return {attr: getattr(self, attr, None) for attr in permitted}
 
 
 signals.pre_save.connect(Click.pre_save, sender=Click)
