@@ -4,6 +4,26 @@ serene_bardeen
 Article link tracer
 
 
+# Installation
+----------
+
+## Prerequsite
+
+```bash
+sudo apt-get update
+sudo apt-get install build-essential python-dev nginx mongodb
+sudo apt-get install libevent-dev
+sudo apt-get install python-software-properties
+sudo apt-add-repository ppa:gunicorn/ppa
+sudo apt-get update
+sudo apt-get install gunicorn
+
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+rm get-pip.py
+
+```
+
 # API
 ----------
 
@@ -24,7 +44,7 @@ Article link tracer
        "created_at": 1415402702,
        "short_link": "{{base_url}}/1234"
  }
- 
+
  ```
 
 ### Redirect link
@@ -56,7 +76,7 @@ Article link tracer
          "created_at": 1415597860
      }
  ]
- 
+
  ```
 
 
