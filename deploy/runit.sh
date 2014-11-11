@@ -1,7 +1,7 @@
 #!/bin/sh
 
 GUNICORN=/usr/bin/gunicorn
-ROOT=/home/ubuntu/serene_bardeen
+ROOT=/home/ubuntu/serene_bardeen/current
 PID=/var/run/gunicorn.pid
 APP=main:application
 
