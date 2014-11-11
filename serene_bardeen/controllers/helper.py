@@ -41,4 +41,5 @@ def get_ip():
 def get_user_agent():
 
     return (bottle.request.get_header('X-User-Agent') or
-            bottle.request.get('USER_AGENT'))
+            bottle.request.get('USER_AGENT') or
+            'Unknown')
