@@ -55,6 +55,11 @@ def upload_server_code():
 
     local('rm %s' % archive_file)
 
+    runit_script = os.path.join(SERVER_NEW_RELEASE_DIR, 'deploy', 'runit.sh')
+    runit_exe = '/etc/sv/serene_bardeen/run'
+    sudo('cp %s %s' % (runit_script, runit_exe))
+    sudo('chmod u+x /etc/sv/serene_bardeen/run')
+
 
 def install_server_code():
 
@@ -66,3 +71,4 @@ def install_server_code():
 def restart_gunicorn_gracefully():
 
     sudo('kill -HUP `cat /var/run/gunicorn.pid`')
+    sudo('sv restart serene_bardeen')
