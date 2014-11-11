@@ -60,6 +60,7 @@ def install_server_code():
 
     with cd(SERVER_CURRENT_RELEASE_DIR):
         sudo('pip install -r requirements.txt')
+        sudo('python setup.py develop')
 
 
 def restart_gunicorn_gracefully():
