@@ -17,11 +17,6 @@ SERVER_RELEASE_DIR = os.path.join(SERVER_ROOT, 'releases')
 SERVER_NEW_RELEASE_DIR = os.path.join(SERVER_ROOT, 'releases', str(CURR_TIME))
 SERVER_CURRENT_RELEASE_DIR = os.path.join(SERVER_ROOT, 'current')
 
-VIRTUALENV_ROOT = '/home/ubuntu/.virtualenvs/serene_bardeen'
-VIRTUALENV_PYTHON_EXECUTABLE = VIRTUALENV_ROOT + '/bin/python'
-VIRTUALENV_PIP_EXECUTABLE = VIRTUALENV_ROOT + '/bin/pip'
-VIRTUALENV_FAB_EXECUTABLE = VIRTUALENV_ROOT + '/bin/fab'
-
 env.user = 'ubuntu'
 env.key_filename = '/home/yuliang/.ssh/serene_bardeen.pem'
 
@@ -64,7 +59,7 @@ def upload_server_code():
 def install_server_code():
 
     with cd(SERVER_CURRENT_RELEASE_DIR):
-        sudo('%s install -r requirements.txt' % VIRTUALENV_PIP_EXECUTABLE)
+        sudo('pip install -r requirements.txt')
 
 
 def restart_gunicorn_gracefully():
