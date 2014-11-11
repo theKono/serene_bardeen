@@ -52,3 +52,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+config_production.py
+config.py
+.venv
