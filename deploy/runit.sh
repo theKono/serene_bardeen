@@ -8,4 +8,4 @@ APP=main:application
 if [ -f $PID ]; then rm $PID; fi
 
 cd $ROOT
-exec $GUNICORN -c $ROOT/deploy/gunicorn.conf.py --pid=$PID $APP
+exec $GUNICORN -c $ROOT/deploy/gunicorn.config.py --pid=$PID $APP
