@@ -9,3 +9,8 @@ This file will be added to as part of each release
 
  * Register links
  * Track click events
+
+1.1
+----
+
+ * Consolidate some Link document fields and Click document
