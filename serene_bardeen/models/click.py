@@ -18,13 +18,20 @@ class Click(Document):
     # same as _id, but type is str
     click_id = StringField(required=True, unique=True)
     link_id = StringField(required=True)
+    article_id = StringField(required=True)
+    original_link = StringField(required=True)
     ip = StringField(required=True)
     user_agent = StringField(required=True)
     created_at = IntField(required=True, default=time.time)
 
     meta = {
-        'indexes': ['link_id', 'created_at']
+        'indexes': ['link_id', 'article_id', 'created_at']
     }
+
+    permitted_fields = (
+        'click_id', 'link_id', 'article_id', 'original_link',
+        'ip', 'user_agent', 'created_at'
+    )
 
     @classmethod
     def ip2long(cls, ip):
@@ -39,8 +46,7 @@ class Click(Document):
     @classmethod
     def from_pymongo_to_json(cls, doc):
 
-        permitted = ('click_id', 'link_id', 'ip', 'user_agent', 'created_at')
-        return {k: doc[k] for k in permitted if k in doc}
+        return {k: doc[k] for k in cls.permitted_fields if k in doc}
 
     @classmethod
     def pre_save(cls, sender, document, **kwargs):
@@ -53,8 +59,7 @@ class Click(Document):
 
     def to_json(self):
 
-        permitted = ('click_id', 'link_id', 'ip', 'user_agent', 'created_at')
-        return {attr: getattr(self, attr, None) for attr in permitted}
+        return {pf: getattr(self, pf, None) for pf in self.permitted_fields}
 
 
 signals.pre_save.connect(Click.pre_save, sender=Click)

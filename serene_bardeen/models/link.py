@@ -13,13 +13,9 @@ from serene_bardeen.config import Config
 
 class Link(Document):
 
-    article_id = StringField(required=True)
-    original_link = StringField(required=True, unique=True)
+    article_id = StringField(required=True, unique_with='original_link')
+    original_link = StringField(required=True)
     created_at = DateTimeField(required=True, default=datetime.utcnow)
-
-    meta = {
-        'indexes': ['article_id']
-    }
 
     def to_json(self):
 

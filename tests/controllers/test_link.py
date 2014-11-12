@@ -112,5 +112,7 @@ class TestRedirectOriginalLink(BaseApiTestCase):
         expect(click_event).to_not.be(None)
         expect(click_event.click_id).to.eql(str(click_event.id))
         expect(click_event.link_id).to.eql(str(link.id))
+        expect(click_event.article_id).to.eql(link.article_id)
+        expect(click_event.original_link).to.eql(link.original_link)
         expect(click_event.ip).to.eql(ip)
         expect(click_event.user_agent).to.eql(user_agent)

@@ -23,5 +23,7 @@ class ClickFactory(MongoEngineFactory):
 
     id = Sequence(lambda _: str(ObjectId()))
     link_id = Sequence(lambda _: str(ObjectId()))
+    article_id = Sequence(lambda n: 'aid_%s' % n)
+    original_link = Sequence(lambda n: 'http://www.google.com?q=%s' % n)
     ip = Sequence(lambda _: randip())
     user_agent = Sequence(lambda n: 'user-agent %s' % n)
