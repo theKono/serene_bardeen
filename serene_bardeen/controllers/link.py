@@ -52,10 +52,12 @@ def create():
 @app.get('/<link_id:re:[0-9a-f]{24}>')
 def redirect_link(link_id):
 
-    link = Link.objects(id=link_id).only('original_link').first()
+    link = Link.objects(id=link_id).first()
     link is None and abort(404, {'message': 'Cannot identify the link'})
 
     click = Click(link_id=str(link.id))
+    click.article_id = link.article_id
+    click.original_link = link.original_link
     click.ip = get_ip()
     click.user_agent = get_user_agent()
     click.save()
