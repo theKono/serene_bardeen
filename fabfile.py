@@ -17,8 +17,11 @@ SERVER_RELEASE_DIR = os.path.join(SERVER_ROOT, 'releases')
 SERVER_NEW_RELEASE_DIR = os.path.join(SERVER_ROOT, 'releases', str(CURR_TIME))
 SERVER_CURRENT_RELEASE_DIR = os.path.join(SERVER_ROOT, 'current')
 
+VIRTUALENV_PYTHON_EXECUTABLE = '/opt/serene_bardeen/bin/python'
+VIRTUALENV_PIP_EXECUTABLE = '/opt/serene_bardeen/bin/pip'
+
 env.user = 'ubuntu'
-env.key_filename = '/home/yuliang/.ssh/serene_bardeen.pem'
+env.key_filename = 'serene_bardeen.pem'
 
 
 def production():
@@ -31,7 +34,7 @@ def deploy_server():
 
     upload_server_code()
     install_server_code()
-    restart_gunicorn_gracefully()
+    restart_apache_gracefully()
 
 
 def upload_server_code():
@@ -55,20 +58,15 @@ def upload_server_code():
 
     local('rm %s' % archive_file)
 
-    runit_script = os.path.join(SERVER_NEW_RELEASE_DIR, 'deploy', 'runit.sh')
-    runit_exe = '/etc/sv/serene_bardeen/run'
-    sudo('cp %s %s' % (runit_script, runit_exe))
-    sudo('chmod u+x /etc/sv/serene_bardeen/run')
-
 
 def install_server_code():
 
     with cd(SERVER_CURRENT_RELEASE_DIR):
-        sudo('pip install -r requirements.txt')
-        sudo('python setup.py develop')
+        sudo('%s install -r requirements.txt' % VIRTUALENV_PIP_EXECUTABLE)
+        sudo('%s install -e .' % VIRTUALENV_PIP_EXECUTABLE)
 
 
-def restart_gunicorn_gracefully():
+def restart_apache_gracefully():
 
-    sudo('kill -HUP `cat /var/run/gunicorn.pid`')
-    sudo('sv restart serene_bardeen')
+    sudo('service apache2 graceful')
+
